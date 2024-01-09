@@ -28,5 +28,7 @@ fun main() {
     //ejercicio_2_2_25()
     //ejercicio_2_3_2()
     //ejercicio_2_3_3()
-    ejercicio_2_3_4()
+    //ejercicio_2_3_4()
+    //ejercicio_3_1_4()
+    ejercicio_3_1_6()
 }

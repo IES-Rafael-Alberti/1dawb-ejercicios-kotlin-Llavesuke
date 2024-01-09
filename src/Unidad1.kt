@@ -413,3 +413,53 @@ fun ejercicio_2_3_4() {
         }
     }
 
+fun ejercicio_3_1_4(){
+    val listaNumeros = mutableListOf<Int>()
+
+    for (i in 1..6){
+        print("Introduce el numero $i -> ")
+        val numero = readln().toInt()
+
+        if (numero in 1..49){
+            listaNumeros.add(numero)
+        } else{
+            println("Numero no valido")
+        }
+    }
+    listaNumeros.sort()
+
+    println("La lista de los numeros ganadores es ${listaNumeros.joinToString(", ")}")
+}
+
+fun ejercicio_3_1_6(){
+    val listaAsignaturas = mutableListOf<String>()
+    val listaNotas = mutableListOf<Double>()
+    var entradaUsuario = "a"
+
+    while (entradaUsuario != ""){
+        print("Introduzca una asignatura -> ")
+        entradaUsuario = readln()
+
+        if (entradaUsuario.toIntOrNull() == null) {
+            listaAsignaturas.add(entradaUsuario)
+        } else {
+            println("Eso no es una asignatura")
+        }
+    }
+
+      var i = 1
+      while (i < listaAsignaturas.size) {
+            print("Introduzca la nota de ${listaAsignaturas[i-1]} -> ")
+            val nota = readln()
+
+            if (nota.toDoubleOrNull() == null) {
+              println("Nota invalida")
+            } else if (nota.toDouble() > 5.0 ){
+                listaAsignaturas.removeAt(i-1)
+            } else {
+                i++
+            }
+        }
+
+  println("Tienes que repetir ${listaAsignaturas.joinToString(", ")}")
+}
