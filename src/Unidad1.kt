@@ -1,3 +1,6 @@
+import kotlin.math.pow
+import kotlin.math.roundToInt
+import kotlin.math.roundToLong
 import kotlin.text.replaceFirstChar as replaceFirstChar
 
 fun ejercicio_4() {
@@ -447,6 +450,7 @@ fun ejercicio_3_1_6(){
         }
     }
 
+
       var i = 1
       while (i < listaAsignaturas.size) {
             print("Introduzca la nota de ${listaAsignaturas[i-1]} -> ")
@@ -462,4 +466,73 @@ fun ejercicio_3_1_6(){
         }
 
   println("Tienes que repetir ${listaAsignaturas.joinToString(", ")}")
+}
+
+fun ejercicio_3_1_8(){
+    println("**COMPROBADOR PALABRAS PALINDROMAS**")
+    print("Introduzca su palabra para ser COMPROBADA -> ")
+    val palabra = readln().trim().toList()
+
+    if (palabra == palabra.asReversed()){
+        println("${palabra.joinToString("")} palindroma detectada")
+    } else {
+        println("${palabra.joinToString("")} no es palindroma")
+    }
+}
+
+fun ejercicio_3_1_9(){
+    print("Introduzca una palabra, lets see how much vocals it has -> ")
+    val palabra = readln().trim().lowercase().toList()
+    val vocales = mutableListOf<Int>(0,0,0,0,0) // (a,e,i,o,u)
+
+    for (letter in palabra){
+        when {
+            letter == 'a' -> vocales[0]++
+            letter == 'e' -> vocales[1]++
+            letter == 'i' -> vocales[2]++
+            letter == 'o' -> vocales[3]++
+            letter == 'u' -> vocales[4]++
+        }
+    }
+    println("CONTEO DE VOCALES")
+    println(" a -> ${vocales[0]} \n e -> ${vocales[1]} \n i -> ${vocales[2]} \n o -> ${vocales[3]} \n u -> ${vocales[4]}")
+}
+
+fun ejercicio_3_1_10(){
+    val listaPrecios = listOf<Int>(50, 75, 46, 22, 80, 65, 8)
+
+    val precioMenor = listaPrecios.minOrNull()
+    val precioMayor = listaPrecios.maxOrNull()
+
+    print("Precio mayor -> $precioMayor\nPrecio Menor -> $precioMenor")
+}
+
+fun ejercicio_3_1_13(){
+    print("Introduzca una muestra numerica separada por comas -> ")
+    val listaString = readln().trim().split(",")
+    val listaNumerica = mutableListOf<Int>()
+    var sumaAritmetica = 0.0
+    var suma: Int = 0
+    var desviacionTipica = 0.0
+
+    for (numero in listaString){
+        listaNumerica.add(numero.toInt())
+    }
+
+    for (numero in listaNumerica){
+        suma += numero
+    }
+    val media = suma/listaNumerica.size
+
+    for (numero in listaNumerica){
+        sumaAritmetica += ((numero - media) * (numero - media))
+
+    }
+
+    desviacionTipica = ((sumaAritmetica/listaNumerica.size))
+    val desviacionTipica2 = desviacionTipica.pow(0.5)
+    val desviacionResultado = ""
+
+    println("Media -> $media")
+    println("Desviacion tipica -> ${"%.2f".format(desviacionTipica2)}")
 }
