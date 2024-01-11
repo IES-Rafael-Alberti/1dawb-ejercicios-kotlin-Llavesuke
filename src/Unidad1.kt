@@ -1,3 +1,4 @@
+import java.lang.reflect.Array
 import kotlin.math.pow
 import kotlin.math.roundToInt
 import kotlin.math.roundToLong
@@ -535,4 +536,268 @@ fun ejercicio_3_1_13(){
 
     println("Media -> $media")
     println("Desviacion tipica -> ${"%.2f".format(desviacionTipica2)}")
+}
+
+fun ejercicio_3_2_3() {
+
+    val priceMap = mapOf("platano" to 1.35, "manzana" to 0.80, "pera" to 0.85, "naranja" to 0.70)
+
+    print("¿Que fruta desea ? -> ")
+    val fruitUser = readln().trim().lowercase()
+
+    print("¿Cuantos kilos se llevara -> ")
+    val weight = readln().trim().toDouble()
+
+    when {
+        fruitUser in priceMap.keys -> print("Cuesta ${"%.2f".format(weight * priceMap[fruitUser]!!)} ")
+        fruitUser !in priceMap.keys -> println("No tenemos esa fruta")
+    }
+}
+
+fun ejercicio_3_2_5(){
+    val creditsMap = mapOf("matematicas" to 6, "fisica" to 4, "quimica" to 5)
+    var totalCredits = 0
+
+    for ((asignatura, creditos) in creditsMap) {
+        println("${asignatura.replaceFirstChar { it.uppercaseChar()}} tiene $creditos")
+        totalCredits += creditos
+
+    }
+    println("Total de creditos: $totalCredits")
+}
+
+fun ejercicio_3_2_6(){
+    val mapUserData = mutableMapOf<String, Any>()
+
+    do {
+        print("Que dato va a introducir -> ")
+        val tipoDato = readln().trim().lowercase()
+
+        print("Dato (ENTER para salir) -> ")
+        val dato = readln().trim().lowercase()
+
+        mapUserData[tipoDato] = dato
+
+        for ((key, value) in mapUserData) {
+            println("$key -> $value")
+        }
+
+    } while (dato.isNotEmpty())
+
+}
+
+fun ejercicio_3_2_8(){
+    val diccionario = mutableMapOf<String, String>()
+
+    print("Palabra:Traduccion y cada par separados por comas \\n -> ")
+    val translatedWords = readln().trim().split(",")
+
+    translatedWords.forEach { pair ->
+        val (key, value) = pair.split(":")
+        diccionario[key] = value
+    }
+
+    print("Introduzca una frase -> ")
+    val frase = readln().trim().split(" ").toMutableList()
+
+    diccionario.keys.forEach {  if (it in frase) {
+            val index = frase.indexOf(it)
+            frase[index] = diccionario[it]!!
+        }
+    }
+    println(frase.joinToString(" "))
+}
+
+fun ejercicio_3_2_10() {
+    val nifCliente = mutableMapOf<String, Map<String, Any>>()
+
+
+    val nombre = {
+        print("Nombre -> ")
+        readln().trim().lowercase().replaceFirstChar { it.uppercaseChar() }
+    }
+
+    val direccion = {
+        print("Direccion -> ")
+        readln().trim()
+    }
+    val telefono = {
+        var input: String
+        var todoOk = false
+
+        do {
+            print("Numero de telefono -> ")
+            input = readln().trim()
+
+            if (input.length == 9) {
+
+                todoOk = true
+            } else {
+                println("Telefono invalido")
+            }
+        } while (!todoOk)
+
+
+        input
+    }
+
+
+
+    val correo = {
+        var input: String
+        var correoverificado = false
+
+        do {
+            print("Correo -> ")
+            input = readln().trim()
+
+            if ("@" in input && ".com" in input) {
+                correoverificado = true
+            } else {
+                println("Correo no válido")
+            }
+        } while (!correoverificado)
+
+        input
+    }
+
+    val preferencia = {
+        var todoOk = false
+        var respuesta: Boolean? = null
+
+        do {
+            print("Es un cliente preferente (s/n) -> ")
+            val input = readln().trim().lowercase()
+
+            when (input) {
+                "s" -> {
+                    respuesta = true
+                    todoOk = true
+                }
+                "n" -> {
+                    respuesta = false
+                    todoOk = true
+                }
+                else -> println("Respuesta invalida")
+            }
+        } while (!todoOk)
+
+        respuesta
+    }
+
+
+
+    val nif = {
+        var input: String
+        var nifCorrecto = false
+
+        do {
+            print("NIF -> ")
+            input = readln().trim()
+
+            if (input.length == 9 && input.substring(0, 7).toIntOrNull() != null && input[8].digitToIntOrNull() == null) {
+                nifCorrecto = true
+            } else {
+                println("NIF invalido")
+            }
+        } while (!nifCorrecto)
+
+        input
+    }
+
+    val menu = {
+        do {
+            print(
+                "1 -> Añadir cliente\n2 -> Eliminar cliente\n3 -> Mostrar cliente\n" +
+                        "4 -> Listar todos los clientes\n5 -> Listar clientes preferentes\n6 -> Terminar\n-> "
+            )
+            val respuesta = readln().trim().toIntOrNull()
+
+            when (respuesta) {
+                1 -> {
+                    val nombreCliente = nombre()
+                    val direccionCliente = direccion()
+                    val telefonoCliente = telefono()
+                    val correoCliente = correo()
+                    val preferenciaCliente = preferencia()
+
+                    val nifUsuario = nif()
+
+                    val datosCliente: Map<String, Any?> =
+                        mapOf("Nombre" to nombreCliente,
+                            "Direccion" to direccionCliente,
+                            "Telefono" to telefonoCliente,
+                            "Correo" to correoCliente,
+                            "Preferencia" to preferenciaCliente)
+
+                    nifCliente[nifUsuario] = datosCliente as Map<String, Any>
+
+                }
+                2 -> {
+                    print("Introduce el NIF del usuario a borrar -> ")
+                    val nifUsuario = nif()
+                    nifCliente.remove(nifUsuario)
+                    print("Usuario borrado")
+                }
+                3 -> {
+                    val nifUsuario = nif()
+                    val clienteDetails = nifCliente[nifUsuario]
+
+                    if (clienteDetails != null){
+                        println("${clienteDetails. forEach{
+                            key, value -> print("$key -> ${clienteDetails[key]}\n")
+                        }}")
+                    } else {
+                        println("No hay nadie con ese NIF")
+                    }
+                }
+                4 -> {
+                    nifCliente.forEach {
+                        nif, datos -> print("NIF: $nif -> Nombre: ${datos["Nombre"]}\n")
+                    }
+                }
+                5 -> {
+                    nifCliente.forEach {
+                            nif, datos -> if (datos["Preferencia"] == true){
+                                print("NIF: $nif -> Nombre: ${datos["Nombre"]}\n")
+                    } else {
+                        print("No hay clientes preferentes")
+                    }
+                    }
+                }
+                6 -> println("Terminando...")
+                else -> println("Opción inválida")
+            }
+        } while (respuesta != 6)
+    }
+    menu()
+}
+
+fun ejercicio_3_2_11(){
+
+    val fichero = "nif;nombre;email;teléfono;descuento\n01234567L;Luis González;luisgonzalez@mail.com;656343576;12.5\n71476342J;Macarena Ramírez;macarena@mail.com;692839321;8\n63823376M;Juan José Martínez;juanjo@mail.com;664888233;5.2\n98376547F;Carmen Sánchez;carmen@mail.com;667677855;15.7".split("\n")
+
+    val claves = fichero[0].split(";")
+
+    val conjuntoClientes = mutableMapOf<String, Map<String, Any>>()
+
+    fichero.subList(1,fichero.size).forEach { linea ->
+        val datos = linea.split(";")
+
+        val info = mutableMapOf<String, Any>()
+
+        for (i in claves.indices){
+            if (i != 0){
+            val clave = claves[i]
+            val valor = when (clave) {
+                "descuento" -> datos[i].toDouble()
+                else -> datos[i]
+            }
+            info[clave] = valor
+        }
+        conjuntoClientes[datos[0]] = info
+
+        }
+    }
+    println(conjuntoClientes)
 }

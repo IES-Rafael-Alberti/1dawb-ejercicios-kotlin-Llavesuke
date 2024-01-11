@@ -34,5 +34,11 @@ fun main() {
     //ejercicio_3_1_8()
     //ejercicio_3_1_9()
     //ejercicio_3_1_10()
-    ejercicio_3_1_13()
+    //ejercicio_3_1_13()
+    //ejercicio_3_2_3()
+    //ejercicio_3_2_5()
+    //ejercicio_3_2_6()
+    //ejercicio_3_2_8()
+    //ejercicio_3_2_10()
+    ejercicio_3_2_11()
 }
