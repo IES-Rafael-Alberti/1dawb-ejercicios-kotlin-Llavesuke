@@ -773,31 +773,179 @@ fun ejercicio_3_2_10() {
     menu()
 }
 
-fun ejercicio_3_2_11(){
+fun ejercicio_3_2_11() {
 
-    val fichero = "nif;nombre;email;teléfono;descuento\n01234567L;Luis González;luisgonzalez@mail.com;656343576;12.5\n71476342J;Macarena Ramírez;macarena@mail.com;692839321;8\n63823376M;Juan José Martínez;juanjo@mail.com;664888233;5.2\n98376547F;Carmen Sánchez;carmen@mail.com;667677855;15.7".split("\n")
+    val fichero =
+        "nif;nombre;email;teléfono;descuento\n01234567L;Luis González;luisgonzalez@mail.com;656343576;12.5\n71476342J;Macarena Ramírez;macarena@mail.com;692839321;8\n63823376M;Juan José Martínez;juanjo@mail.com;664888233;5.2\n98376547F;Carmen Sánchez;carmen@mail.com;667677855;15.7".split(
+            "\n"
+        )
 
     val claves = fichero[0].split(";")
 
     val conjuntoClientes = mutableMapOf<String, Map<String, Any>>()
 
-    fichero.subList(1,fichero.size).forEach { linea ->
+    fichero.subList(1, fichero.size).forEach { linea ->
         val datos = linea.split(";")
 
         val info = mutableMapOf<String, Any>()
 
-        for (i in claves.indices){
-            if (i != 0){
-            val clave = claves[i]
-            val valor = when (clave) {
-                "descuento" -> datos[i].toDouble()
-                else -> datos[i]
+        for (i in claves.indices) {
+            if (i != 0) {
+                val clave = claves[i]
+                val valor = when (clave) {
+                    "descuento" -> datos[i].toDouble()
+                    else -> datos[i]
+                }
+                info[clave] = valor
             }
-            info[clave] = valor
-        }
-        conjuntoClientes[datos[0]] = info
+            conjuntoClientes[datos[0]] = info
 
         }
     }
     println(conjuntoClientes)
 }
+
+fun ejercicio_3_3_1(){
+    val residence_list: (List<List<Any>>) -> MutableSet<Any> = { list ->
+        val residences = mutableSetOf<Any>()
+
+        for (residence: List<Any> in list) residences.add(residence[3])
+
+        residences
+    }
+
+    val billData = listOf(
+        listOf("Nuria Costa", 5, 12780.78, "Calle Las Flores 355"),
+        listOf("Jorge Russo", 7, 699, "Mirasol 218"),
+        listOf("Nuria Costa", 7, 532.90, "Calle Las Flores 355"),
+        listOf("Julián Rodriguez", 12, 5715.99, "La Mancha 761"),
+        listOf("Jorge Russo", 15, 958, "Mirasol 218"))
+
+        val domicilies = residence_list(billData)
+
+    println("DOMICILIOS A ENVIAR -> ${domicilies.forEach{ println(it) }}")
+
+
+}
+
+fun ejercicio_3_3_2(){
+    val estudiantesPrimaria = {
+        val estudiantes= mutableSetOf<String>()
+
+        do{
+            print("Nombre estudiante de primaria (x para salir) -> ")
+            val nombre = readln().trim()
+
+            if (nombre != "x"){
+                estudiantes.add(nombre)
+            }
+
+        } while (nombre.lowercase() != "x")
+
+        estudiantes
+    }
+
+    val estudiantesSecundaria = {
+        val estudiantes= mutableSetOf<String>()
+
+        do{
+            print("Nombre estudiante de primaria (x para salir) -> ")
+            val nombre = readln().trim()
+
+            estudiantes.add(nombre)
+        } while (nombre.lowercase() != "x")
+
+        estudiantes
+    }
+
+    val mostrarEstudiantes: (MutableSet<String>, MutableSet<String>) -> Unit = { estudiantesPrimaria, estudiantesSecundaria ->
+        println("Nombres de los alumnos de primaria y secundaria:")
+        println(estudiantesPrimaria.union(estudiantesSecundaria))
+
+        val nombresRepetidos = estudiantesPrimaria.intersect(estudiantesSecundaria)
+        println("Nombres que se repiten entre primaria y secundaria:")
+        println(nombresRepetidos)
+
+        // Mostrar nombres de primaria que no se repiten en secundaria
+        val nombresUnicosPrimaria = estudiantesPrimaria.subtract(estudiantesSecundaria)
+        println("Nombres de primaria que no se repiten en secundaria:")
+        println(nombresUnicosPrimaria)
+
+        // Mostrar si todos los nombres de primaria están incluidos en secundaria
+        val todosEnSecundaria = estudiantesPrimaria.all { it in estudiantesSecundaria }
+        println("¿Todos los nombres de primaria están incluidos en secundaria?: " +
+                "${ if (todosEnSecundaria) "Si" else "No"}")
+    }
+
+    val primaria = estudiantesPrimaria()
+    val secundaria = estudiantesSecundaria()
+
+    mostrarEstudiantes(primaria, secundaria)
+}
+
+fun ejercicio_3_3_3(){
+    val conjuntoPotencia: (Set<Int>) -> List<Set<Int>> = {
+        val originalList = it.toList()
+        val n = originalList.size
+        val result = mutableListOf(emptyList<Int>())
+
+        var i = 0
+        while (i < n) {
+            val currentElement = originalList[i]
+            val newSubset = result.map { subset -> subset + listOf(currentElement) }
+            result.addAll(newSubset)
+            i++
+        }
+
+        val orderedResult = result.sortedBy { it.size }
+
+        orderedResult.map { it.toSet() }
+    }
+
+   val exampleSet = setOf(0,1,2)
+    val conjunto = conjuntoPotencia(exampleSet)
+    print(conjunto)
+}
+
+fun ejercicio_3_3_4(){
+    val setFrutas1 = setOf("manzana", "pera", "naranja", "plátano", "uva")
+    val setFrutas2 = setOf("manzana", "pera", "durazno", "sandía", "uva")
+
+    val frutasComunes = setFrutas1.intersect(setFrutas2)
+    val frutasSoloEnFrutas1 = setFrutas1.subtract(setFrutas2)
+    val frutasSoloEnFrutas2 = setFrutas2.subtract(setFrutas1)
+
+    println(frutasComunes)
+    println(frutasSoloEnFrutas1)
+    println(frutasSoloEnFrutas2)
+}
+
+fun ejercicio_3_3_5(){
+    val numeros = setOf(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
+
+    val pares = numeros.filter { it % 2 == 0 }.toSet()
+
+    val multiplo3 = numeros.filter { it % 3 == 0 }.toSet()
+
+    val paresYMultiplosDe3 = pares.intersect(multiplo3)
+
+    println(pares)
+    println(multiplo3)
+    println(paresYMultiplosDe3)
+
+}
+
+fun ejercicio_3_3_6(){
+    val vocales = setOf('a', 'e', 'i', 'o', 'u')
+
+    val consonantes = ('a' .. 'z').toSet().subtract(vocales)
+
+    val letrasComunes = vocales.intersect(consonantes) //estara vacio
+
+    println(vocales)
+    println(consonantes)
+    println(letrasComunes)
+
+}
+
+
